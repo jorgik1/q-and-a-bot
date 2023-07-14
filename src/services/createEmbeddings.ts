@@ -14,8 +14,12 @@ export async function createEmbeddings({
   maxCharLength?: number;
 }): Promise<Embeddings> {
   try {
-    const textEmbeddings = await getEmbeddingsForText({ text, maxCharLength });
+    const textEmbeddings = await getEmbeddingsForText({
+      text,
+      maxCharLength,
+    });
 
+    // If there are 0 or 1 embeddings, the mean embedding is the same as the embedding
     if (textEmbeddings.length <= 1) {
       return {
         meanEmbedding: textEmbeddings[0]?.embedding ?? [],
@@ -23,17 +27,17 @@ export async function createEmbeddings({
       };
     }
 
+    // If there are multiple embeddings, calculate their average
     const embeddingLength = textEmbeddings[0].embedding.length;
-    const meanEmbedding = Array(embeddingLength).fill(0);
-
-    for (const textEmbedding of textEmbeddings) {
-      for (let i = 0; i < embeddingLength; i++) {
-        meanEmbedding[i] += textEmbedding.embedding[i];
-      }
-    }
-
+    const meanEmbedding = [] as Array<number>;
     for (let i = 0; i < embeddingLength; i++) {
-      meanEmbedding[i] /= textEmbeddings.length;
+      // Sum up the values at the same index of each embedding
+      let sum = 0;
+      for (const textEmbedding of textEmbeddings) {
+        sum += textEmbedding.embedding[i];
+      }
+      // Divide by the number of embeddings to get the mean
+      meanEmbedding.push(sum / textEmbeddings.length);
     }
 
     return {
