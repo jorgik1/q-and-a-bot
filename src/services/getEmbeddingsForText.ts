@@ -19,7 +19,7 @@ export async function getEmbeddingsForText({
 }): Promise<TextEmbedding[]> {
   const textChunks = chunkText({ text, maxCharLength });
 
-  const batches = [] as Array<string[]>;
+  const batches = [];
   for (let i = 0; i < textChunks.length; i += batchSize) {
     batches.push(textChunks.slice(i, i + batchSize));
   }
