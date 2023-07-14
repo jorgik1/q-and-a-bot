@@ -29,7 +29,7 @@ export async function createEmbeddings({
 
     // If there are multiple embeddings, calculate their average
     const embeddingLength = textEmbeddings[0].embedding.length;
-    const meanEmbedding = [] as Array<number>;
+    const meanEmbedding = [];
     for (let i = 0; i < embeddingLength; i++) {
       // Sum up the values at the same index of each embedding
       let sum = 0;
