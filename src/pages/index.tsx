@@ -4,6 +4,7 @@ import { useState } from "react";
 import FileQandAArea from "../components/FileQandAArea";
 import { FileLite } from "../types/file";
 import FileUploadArea from "../components/FileUploadArea";
+import React from "react";
 
 export default function FileQandA() {
   const [files, setFiles] = useState<FileLite[]>([]);
